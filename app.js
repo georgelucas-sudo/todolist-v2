@@ -27,6 +27,26 @@ const item = mongoose.model("item", itemsSchema) // here we create  our model wh
     // and the inside the (we put our item in a singular format with another parameter using our schema)
 
 
+
+// here we create our items
+const item1 = new item({
+    name: "Welcome to your todolist!"
+})
+const item2 = new item({
+    name: "Hit the + button to add a new item."
+})
+const item3 = new item({
+    name: "<-- Hit this to delete an item."
+})
+
+const defaultItems = [item1, item2, item3]; // we create a default items array
+
+
+
+
+
+
+
 app.get("/", function(req, res) {
 
     // const day = date.getDate(); we delete our date
