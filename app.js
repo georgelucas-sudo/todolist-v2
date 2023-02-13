@@ -2,7 +2,7 @@
 
 const express = require("express");
 const bodyParser = require("body-parser");
-const date = require(__dirname + "/date.js");
+// const date = require(__dirname + "/date.js");  we delete our date and use a simpler formate
 const mongoose = require("mongoose");
 
 const app = express();
@@ -13,14 +13,25 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 mongoose.connect("mongodb://localhost:27017/todolistDB", { useNewUrlParser: true });
 
-const items = ["Buy Food", "Cook Food", "Eat Food"];
-const workItems = [];
+// const items = ["Buy Food", "Cook Food", "Eat Food"];
+// const workItems = [];
+
+const itemsSchema = { //where itemsSchema is the schema name
+    name: String //the we put the field name plus it s data type which is a string
+        // our schema
+};
+
+
+// them we create a model here 
+const item = mongoose.model("item", itemsSchema) // here we create  our model where item is the name of the  model
+    // and the inside the (we put our item in a singular format with another parameter using our schema)
+
 
 app.get("/", function(req, res) {
 
-    const day = date.getDate();
+    // const day = date.getDate(); we delete our date
 
-    res.render("list", { listTitle: day, newListItems: items });
+    res.render("list", { listTitle: "Today", newListItems: items });
 
 });
 
