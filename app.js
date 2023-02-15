@@ -25,7 +25,7 @@ const itemsSchema = { //where itemsSchema is the schema name
 // them we create a model here 
 const item = mongoose.model("item", itemsSchema) // here we create  our model where item is the name of the  model
     // and the inside the (we put our item in a singular format with another parameter using our schema)
-
+    //and we add our collection
 
 
 // here we create our items
@@ -39,8 +39,19 @@ const item3 = new item({
     name: "<-- Hit this to delete an item."
 })
 
+
+
+
 const defaultItems = [item1, item2, item3]; // we create a default items array
 
+item.insertMany(defaultItems, function(err) { //modelname.insertmany(documentArray, fumction(err){//deal with error or log success})
+    if (err) {
+        console.log(err)
+
+    } else {
+        console.log("Successfully saved default items to  DB.")
+    }
+})
 
 
 
