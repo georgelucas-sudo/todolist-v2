@@ -23,19 +23,19 @@ const itemsSchema = { //where itemsSchema is the schema name
 
 
 // them we create a model here 
-const item = mongoose.model("item", itemsSchema) // here we create  our model where item is the name of the  model
+const Item = mongoose.model("Item", itemsSchema) // here we create  our model where item is the name of the  model
     // and the inside the (we put our item in a singular format with another parameter using our schema)
     //and we add our collection
 
 
 // here we create our items
-const item1 = new item({
+const item1 = new Item({
     name: "Welcome to your todolist!"
 })
-const item2 = new item({
+const item2 = new Item({
     name: "Hit the + button to add a new item."
 })
-const item3 = new item({
+const item3 = new Item({
     name: "<-- Hit this to delete an item."
 })
 
@@ -44,7 +44,7 @@ const item3 = new item({
 
 const defaultItems = [item1, item2, item3]; // we create a default items array
 
-item.insertMany(defaultItems, function(err) { //modelname.insertmany(documentArray, fumction(err){//deal with error or log success})
+Item.insertMany(defaultItems, function(err) { //modelname.insertmany(documentArray, fumction(err){//deal with error or log success})
     if (err) {
         console.log(err)
 
@@ -61,6 +61,11 @@ item.insertMany(defaultItems, function(err) { //modelname.insertmany(documentArr
 app.get("/", function(req, res) {
 
     // const day = date.getDate(); we delete our date
+
+
+    Item.find({}, function(err, foundItems) {
+        console.log(foundItems)
+    })
 
     res.render("list", { listTitle: "Today", newListItems: items });
 
