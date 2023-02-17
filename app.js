@@ -26,6 +26,8 @@ const itemsSchema = { //where itemsSchema is the schema name
 const Item = mongoose.model("Item", itemsSchema) // here we create  our model where item is the name of the  model
     // and the inside the (we put our item in a singular format with another parameter using our schema)
     //and we add our collection
+    // always capitalize ur mongoose model
+
 
 
 // here we create our items
@@ -64,10 +66,11 @@ app.get("/", function(req, res) {
 
 
     Item.find({}, function(err, foundItems) {
+        res.render("list", { listTitle: "Today", newListItems: foundItems });
         console.log(foundItems)
     })
 
-    res.render("list", { listTitle: "Today", newListItems: items });
+
 
 });
 
