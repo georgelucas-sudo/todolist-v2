@@ -9,14 +9,16 @@
     <div class="box">
 
         <%  newListItems.forEach(function(item) { %>
-            <div class="item">
-                <input type="checkbox">
-                <p>
-                    <%=  item.name  %>
-                        <!--we are taping into the name field-->
-                </p>
-                <!--we are taping into the name field-->
-            </div>
+            <form action="/delete" method="post">
+                <div class="item">
+                    <input type="checkbox" name="checkbox" value="<%=item._id%>" onchange="this.form.submit()">
+                    <p>
+                        <%=  item.name  %>
+                            <!--we are taping into the name field-->
+                    </p>
+                    <!--we are taping into the name field-->
+                </div>
+            </form>
             <% }) %>
 
                 <form class="item" action="/" method="post">
