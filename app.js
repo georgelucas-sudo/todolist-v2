@@ -46,14 +46,6 @@ const item3 = new Item({
 
 const defaultItems = [item1, item2, item3]; // we create a default items array
 
-Item.insertMany(defaultItems, function(err) { //modelname.insertmany(documentArray, fumction(err){//deal with error or log success})
-    if (err) {
-        console.log(err)
-
-    } else {
-        console.log("Successfully saved default items to  DB.")
-    }
-})
 
 
 
@@ -66,8 +58,29 @@ app.get("/", function(req, res) {
 
 
     Item.find({}, function(err, foundItems) {
-        res.render("list", { listTitle: "Today", newListItems: foundItems });
-        console.log(foundItems)
+
+        if (foundItems.length === 0) {
+
+            Item.insertMany(defaultItems, function(err) { //modelname.insertmany(documentArray, fumction(err){//deal with error or log success})
+                if (err) {
+                    console.log(err)
+
+                } else {
+                    console.log("Successfully saved default items to  DB.")
+                }
+            })
+            res.redirect
+
+        } else {
+
+
+
+
+            res.render("list", { listTitle: "Today", newListItems: foundItems });
+            // console.log(foundItems)
+
+
+        }
     })
 
 
@@ -76,15 +89,20 @@ app.get("/", function(req, res) {
 
 app.post("/", function(req, res) {
 
-    const item = req.body.newItem;
+    const itemName = req.body.newItem;
+    const item = new Item({
+        name: itemName
+    })
+    item.save(); // save our item into our collection
 
-    if (req.body.list === "Work") {
-        workItems.push(item);
-        res.redirect("/work");
-    } else {
-        items.push(item);
-        res.redirect("/");
-    }
+    res.redirect("/"); // redirect to our home route
+    // if (req.body.list === "Work") {
+    //     workItems.push(item);
+    //     res.redirect("/work");
+    // } else {
+    //     items.push(item);
+    //     res.redirect("/");
+    // }
 });
 
 app.get("/work", function(req, res) {
