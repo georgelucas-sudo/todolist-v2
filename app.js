@@ -48,6 +48,15 @@ const defaultItems = [item1, item2, item3]; // we create a default items array
 
 
 
+// we create a new schema for our list
+
+const listSchema = {
+    name: String,
+    items: [itemsSchema]
+}
+
+
+const List = mongoose.model("List", listSchema) // we create a new model for our list
 
 
 
@@ -86,6 +95,32 @@ app.get("/", function(req, res) {
 
 
 });
+app.get("/:customListName", function(req, res) {
+    const customListName = req.params.customListName;
+
+    List.findOne({ name: customListName }, function(err, foundList) {
+            if (!err) {
+                if (!foundList) {
+                    console.log("Does not exist")
+                        //create a new list
+                } else {
+                    console.log("Exists");
+                    //show an existing list
+                    res.render("list", { listTitle: foundList.name, newListItems: foundList.items })
+                }
+            }
+        })
+        // create a new list
+    const list = new List({
+        name: customListName,
+        items: defaultItems
+    })
+    list.save();
+
+    // res.render("list", { listTitle: customListName, newListItems: foundItems }); // for creating new routes
+
+})
+
 
 app.post("/", function(req, res) {
 
@@ -105,19 +140,19 @@ app.post("/", function(req, res) {
     // }
 });
 app.post("/delete", function(req, res) {
-    const checkedItemId = req.body.checkbox;
-    Item.findByIdAndRemove(checkedItemId, function(err) {
-        if (!err) {
-            console.log("Successfully deleted checked item.");
-            res.redirect("/");
-        }
+        const checkedItemId = req.body.checkbox;
+        Item.findByIdAndRemove(checkedItemId, function(err) {
+            if (!err) {
+                console.log("Successfully deleted checked item.");
+                res.redirect("/");
+            }
+        })
+
+
     })
-
-
-})
-app.get("/work", function(req, res) {
-    res.render("list", { listTitle: "Work List", newListItems: workItems });
-});
+    // app.get("/work", function(req, res) {
+    //     res.render("list", { listTitle: "Work List", newListItems: workItems });
+    // });// we remove the work route
 
 app.get("/about", function(req, res) {
     res.render("about");
