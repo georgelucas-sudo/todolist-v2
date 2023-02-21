@@ -103,6 +103,11 @@ app.get("/:customListName", function(req, res) {
                 if (!foundList) {
                     console.log("Does not exist")
                         //create a new list
+                    const list = new List({
+                        name: customListName,
+                        items: defaultItems
+                    })
+                    list.save();
                 } else {
                     console.log("Exists");
                     //show an existing list
@@ -111,11 +116,7 @@ app.get("/:customListName", function(req, res) {
             }
         })
         // create a new list
-    const list = new List({
-        name: customListName,
-        items: defaultItems
-    })
-    list.save();
+
 
     // res.render("list", { listTitle: customListName, newListItems: foundItems }); // for creating new routes
 
