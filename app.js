@@ -4,6 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 // const date = require(__dirname + "/date.js");  we delete our date and use a simpler formate
 const mongoose = require("mongoose");
+const _ = require("lodash");
 
 const app = express();
 
@@ -96,7 +97,7 @@ app.get("/", function(req, res) {
 
 });
 app.get("/:customListName", function(req, res) {
-    const customListName = req.params.customListName;
+    const customListName = _.capitalize(req.params.customListName);
 
     List.findOne({ name: customListName }, function(err, foundList) {
             if (!err) {
@@ -131,25 +132,45 @@ app.post("/", function(req, res) {
     const item = new Item({
         name: itemName
     })
-    item.save(); // save our item into our collection
+    if (listName === "Today") {
+        item.save(); // save our item into our collection
 
-    res.redirect("/"); // redirect to our home route
+        res.redirect("/"); // redirect to our home route
+
+    } else {
+        List.findOne({ name: listName }, function(err, foundList) {
+            foundList.items.push(item)
+            foundList.save()
+            res.redirect("/" + listName)
+        })
+    }
     // if (req.body.list === "Work") {
     //     workItems.push(item);
     //     res.redirect("/work");
     // } else {
     //     items.push(item);
-    //     res.redirect("/");
+    //     res.redirect("/"); 
     // }
-});
+})
 app.post("/delete", function(req, res) {
         const checkedItemId = req.body.checkbox;
-        Item.findByIdAndRemove(checkedItemId, function(err) {
-            if (!err) {
-                console.log("Successfully deleted checked item.");
-                res.redirect("/");
-            }
-        })
+        const listName = req.body.listName;
+        if (listName === "Today") {
+
+            Item.findByIdAndRemove(checkedItemId, function(err) {
+                if (!err) {
+                    console.log("Successfully deleted checked item.");
+                    res.redirect("/");
+                }
+            })
+        } else {
+            List.findOneAndDelete({ name: listName }, { $pull: { items: { id: checkedItemId } } }, function(err, foundList) {
+
+                if (!err) {
+                    res.redirect("/" + listName)
+                }
+            })
+        }
 
 
     })
