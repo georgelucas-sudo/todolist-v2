@@ -12,7 +12,8 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
-mongoose.connect("mongodb+srv://lucas:0702580350@cluster0.kfdjay7.mongodb.net/todolistDB", { useNewUrlParser: true });
+mongoose.connect("mongodb+srv://lucas:0702580350@cluster0.kfdjay7.mongodb.net/todolistDB", { useNewUrlParser: true }); //added a connection string from the mongo atlas
+
 
 // const items = ["Buy Food", "Cook Food", "Eat Food"];
 // const workItems = [];
@@ -182,6 +183,6 @@ app.get("/about", function(req, res) {
     res.render("about");
 });
 
-app.listen(3000, function() {
+app.listen(process.env.PORT || 3000, function() {
     console.log("Server started on port 3000");
 });
