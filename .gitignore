@@ -1,1 +1,20 @@
-node_modules
+/node_modules
+npm-debug.log
+.Ds_Store
+/*.enc
+# hide Api keys
+config/initializers/secret_token.rb
+config/initializers/secret_token.rb.enc
+config/initializers/devise.rb
+config/initializers/devise.rb.enc
+config/initializers/secret_token.rb
+config/initializers/secret_token.rb.enc
+config/initializers/devise.rb
+config/initializers/devise.rb.enc
+config/initializers/secret_token.rb
+
+# hide mongodb keys
+config/mongoid.yml
+config/mongoid.yml.enc
+config/mongoid.yml
+config/mongoid.yml.enc
