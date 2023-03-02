@@ -6,13 +6,15 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const _ = require("lodash");
 
+require("dotenv").config()
+
 const app = express();
 
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
-mongoose.connect("mongodb+srv://lucas:0702580350@cluster0.kfdjay7.mongodb.net/todolistDB", { useNewUrlParser: true }); //added a connection string from the mongo atlas
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true }); //added a connection string from the mongo atlas
 
 
 // const items = ["Buy Food", "Cook Food", "Eat Food"];
